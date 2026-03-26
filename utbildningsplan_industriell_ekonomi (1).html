@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industriell ekonomi — Utbildningsanalys</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; color: #1a1a1a; background: #f5f4f0; padding: 16px; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab { padding: 7px 14px; border: 1px solid #ccc; border-radius: 20px; cursor: pointer; font-size: 13px; background: white; color: #444; transition: all .15s; }
+  .tab:hover { background: #eee; }
+  .tab.active { background: #1a1a8c; color: white; border-color: #1a1a8c; font-weight: 500; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 16px 18px; margin-bottom: 12px; }
+  .card-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: #888; margin: 18px 0 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 7px 8px; font-weight: 600; border-bottom: 2px solid #eee; color: #555; font-size: 12px; background: #fafafa; }
+  td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: top; line-height: 1.5; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; font-weight: 500; }
+  .b-ok { background: #e6f4d7; color: #2d6a0a; }
+  .b-warn { background: #fff3cd; color: #7d4e00; }
+  .b-fail { background: #fde8e8; color: #8b1a1a; }
+  .b-blue { background: #e8eeff; color: #1a1a8c; }
+  .b-gray { background: #f0f0f0; color: #444; }
+  .b-purple { background: #f0e8ff; color: #4a0080; }
+  .border-ok { border-left: 3px solid #5cb85c; padding: 8px 12px; margin: 6px 0; line-height: 1.6; color: #444; font-size: 13px; }
+  .border-warn { border-left: 3px solid #f0ad4e; padding: 8px 12px; margin: 6px 0; line-height: 1.6; color: #444; font-size: 13px; }
+  .border-fail { border-left: 3px solid #d9534f; padding: 8px 12px; margin: 6px 0; line-height: 1.6; color: #444; font-size: 13px; }
+  .border-green { border-left: 3px solid #5cb85c; padding: 8px 12px; margin: 6px 0; line-height: 1.6; color: #444; font-size: 13px; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .metric { background: #f0f0f0; border-radius: 8px; padding: 12px 14px; }
+  .metric-label { font-size: 12px; color: #666; margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 600; }
+  .step { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+  .step-num { min-width: 28px; height: 28px; border-radius: 50%; background: #1a1a8c; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+  .step-title { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+  .step-body { font-size: 13px; line-height: 1.6; color: #555; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .note { font-size: 12px; color: #888; margin-top: 6px; }
+  .sum-row { background: #f5f5f5; font-weight: 600; }
+  .ter-header { padding: 5px 8px; font-size: 11px; font-weight: 600; color: #666; background: #f8f8f8; letter-spacing: .05em; text-transform: uppercase; }
+  a { color: #1a1a8c; }
+  .alert { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 12px; color: #5d4000; }
+  .info-box { background: #e8eeff; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 12px; color: #1a1a8c; }
+</style>
+</head>
+<body>
+
+<h1>Industriell ekonomi — Utbildningsanalys</h1>
+<p class="subtitle">ÖrU termin 4 → LTH Lund / Chalmers Göteborg. Inkl. AI-arbetsmarknadsanalys.</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('overview')">Programmöversikt</button>
+  <button class="tab" onclick="show('compare')">Jämförelse LTH/Chalmers</button>
+  <button class="tab" onclick="show('match')">Kursmatchning T1–T4</button>
+  <button class="tab" onclick="show('switch')">Bytesstrategi</button>
+  <button class="tab" onclick="show('ai')">AI &amp; arbetsmarknad</button>
+  <button class="tab" onclick="show('action')">Handlingsplan</button>
+</div>
+
+<!-- PANEL 1: OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Program</div><div class="metric-val" style="font-size:15px;margin-top:4px">Civ.ing. Industriell ekonomi</div></div>
+    <div class="metric"><div class="metric-label">Längd &amp; poäng</div><div class="metric-val">5 år · 300 hp</div></div>
+    <div class="metric"><div class="metric-label">ÖrU antagning 2025</div><div class="metric-val">18,85 BI</div></div>
+    <div class="metric"><div class="metric-label">LTH antagning 2025</div><div class="metric-val">21,93 BI</div></div>
+  </div>
+
+  <div class="section-label">Vad kursen faktiskt innehåller (ÖrU)</div>
+  <div class="card">
+    <div class="tag-row">
+      <span class="badge b-blue">Matematik (avancerad)</span>
+      <span class="badge b-blue">Mekanik / maskinteknik</span>
+      <span class="badge b-blue">Produktutveckling</span>
+      <span class="badge b-blue">Kvalitetsutveckling</span>
+      <span class="badge b-warn">Företagsekonomi</span>
+      <span class="badge b-warn">Marknadsföring</span>
+      <span class="badge b-warn">Organisationsutveckling</span>
+      <span class="badge b-ok">Projektledning</span>
+      <span class="badge b-ok">Presentationsteknik</span>
+      <span class="badge b-purple">Examensarbete (år 5)</span>
+    </div>
+    <p style="font-size:13px;color:#555;line-height:1.6">Grunden är teknisk ingenjörsutbildning med ekonomi som inriktning. Matematik är mer avancerad än civilekonomprogrammet. Ekonomidelen är smalare — mer FEK och nationalekonomi saknas. Kärnstyrkan är <em>teknikbaserad affärsutveckling</em> och ledarskap i industriella miljöer.</p>
+  </div>
+
+  <div class="section-label">Varför kallas det "VD-utbildning"?</div>
+  <div class="card">
+    <p style="font-size:13px;color:#555;line-height:1.6">Kombinationen teknik + ekonomi + ledarskap ger helhetssyn. Typiska roller: projektledare, affärsutvecklare, analytiker, inköpare, produktutvecklare, entreprenör. Civilingenjörer inom I-ekonomi når VD-positioner — men det tar normalt 10–20 år. Det är en karriärmöjlighet, inte ett löfte vid examen.</p>
+  </div>
+
+  <div class="section-label">Blinda fläckar — ÖrU vs starkare skolor</div>
+  <div class="card">
+    <div class="border-fail">Djupare finansiell modellering och kvantitativ riskanalys (stark på LTH — specialisering Finans &amp; risk)</div>
+    <div class="border-fail">Bredare teknikinriktningsval år 3–5 (LTH: 4 teknikspår + 6 specialiseringar)</div>
+    <div class="border-fail">Svagare alumninätverk — ÖrU:s program är relativt ungt</div>
+    <div class="border-fail">Lägre signalvärde på CV i internationella rekryteringssammanhang</div>
+    <div class="border-fail">Statistik visar: vanligaste yrke 1 år efter examen är maskiningenjör — inte management</div>
+  </div>
+</div>
+
+<!-- PANEL 2: COMPARE -->
+<div class="panel" id="panel-compare">
+  <div class="info-box">Jämförelsen baseras på officiella programbeskrivningar. Detaljer varierar — kolla alltid aktuell studieplan direkt hos respektive skola.</div>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th>Dimension</th><th>ÖrU Örebro</th><th>LTH Lund</th><th>Chalmers Gbg</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Antagningspoäng 2025 (BI)</td><td>18,85</td><td>21,93</td><td>Hög (HP-krav 1,65)</td></tr>
+        <tr><td>Teknikinriktning år 3</td><td><span class="badge b-fail">Ej tydliga spår</span></td><td><span class="badge b-ok">4 spår</span></td><td><span class="badge b-ok">Valbara block</span></td></tr>
+        <tr><td>Specialisering år 4–5</td><td><span class="badge b-warn">Begränsad</span></td><td><span class="badge b-ok">6 specialiseringar</span></td><td><span class="badge b-ok">Fallstudier/projekt</span></td></tr>
+        <tr><td>Matematik / kvant. djup</td><td><span class="badge b-warn">Avancerad bas</span></td><td><span class="badge b-ok">Extra stark</span></td><td><span class="badge b-ok">Gedigen</span></td></tr>
+        <tr><td>Medianlön 3 år post-examen</td><td>Ej publik</td><td>54 100 kr/mån</td><td>Ej publik</td></tr>
+        <tr><td>Söktryck (1:a-handsval 2025)</td><td>64 st</td><td>992 st</td><td>Hög</td></tr>
+        <tr><td>Närvaro i Skåne</td><td><span class="badge b-fail">Långt bort</span></td><td><span class="badge b-ok">Centralt i Skåne</span></td><td><span class="badge b-warn">~2,5 h</span></td></tr>
+        <tr><td>Byte möjligt via "senare del"?</td><td>—</td><td><span class="badge b-ok">Ja</span></td><td><span class="badge b-ok">Ja</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label">LTH:s unika styrkor</div>
+  <div class="card">
+    <div class="border-green"><strong>Finans och risk</strong> — matematisk modellering + finansiell statistik. Unik specialisering i Sverige.</div>
+    <div class="border-green"><strong>Hållbara energi- och miljösystem</strong> — direkt relevant för CleanTech och ESG-driven industri.</div>
+    <div class="border-green">Starka företagspartnerskap i Sydsvenska industrin (Alfa Laval, SSAB, Axis m.fl.) — nätverksvärde för karriär i Skåne.</div>
+    <div class="border-green">Teknikprofiler år 3: Teknisk design, Energi &amp; miljö, Dataanalys &amp; algoritmer, System &amp; programvara.</div>
+  </div>
+</div>
+
+<!-- PANEL 3: KURSMATCHNING -->
+<div class="panel" id="panel-match">
+  <p style="font-size:13px;color:#555;margin-bottom:12px">ÖrU T1–T4 matchat mot LTH:s krav för "senare del" (90 hp, ≥20 hp matte, ≥20 hp ekonomi, + specifika kurser). Studenten är på T4 nu.</p>
+
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr><th style="width:28%">ÖrU-kurs</th><th style="width:7%">HP</th><th style="width:28%">LTH-motsvarighet</th><th style="width:10%">Typ</th><th style="width:11%">Bedömning</th><th style="width:16%">Notering</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="6" class="ter-header">Termin 1</td></tr>
+        <tr>
+          <td>Funktioner och derivator</td><td>4,5</td>
+          <td>FMAB65 Endim. analys B1 (7,5 hp)</td>
+          <td><span class="badge b-blue">Matte</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">ÖrU-kurs smalare, räknas troligen som del</td>
+        </tr>
+        <tr>
+          <td>Linjär algebra</td><td>6</td>
+          <td>FMAB20 Linjär algebra (6 hp)</td>
+          <td><span class="badge b-blue">Matte</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">God match i innehåll och poäng</td>
+        </tr>
+        <tr>
+          <td>Grundläggande programmering</td><td>7,5</td>
+          <td>EDAA85 Prog.teknik grundkurs ← <strong>KRAV</strong></td>
+          <td><span class="badge b-gray">Prog.</span></td>
+          <td><span class="badge b-warn">Osäkert</span></td>
+          <td style="font-size:12px;color:#666">EDAA55 är nedlagd, ersatt av EDAA85 (Python). Kräver kursplansjämförelse.</td>
+        </tr>
+        <tr>
+          <td>Introduktion till ingenjörsarbete (x2)</td><td>9</td>
+          <td>MIOA01 Ind. ekonomi AK ← <strong>KRAV</strong></td>
+          <td><span class="badge b-warn">Ind. ek.</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">Ekonomidelar ingår men ej renodlad ind. ek. AK</td>
+        </tr>
+        <tr><td colspan="6" class="ter-header">Termin 2</td></tr>
+        <tr>
+          <td>Integraler och differentialekvationer</td><td>6</td>
+          <td>FMAB70 Endim. analys B2 (7,5 hp)</td>
+          <td><span class="badge b-blue">Matte</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">Trolig innehållsmatch, 1,5 hp smalare</td>
+        </tr>
+        <tr>
+          <td>Flervariabelanalys</td><td>6</td>
+          <td>FMAB30 Flerdim. analys (6 hp)</td>
+          <td><span class="badge b-blue">Matte</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">Stark match — innehåll och poäng stämmer</td>
+        </tr>
+        <tr>
+          <td>Mekanik</td><td>7,5</td>
+          <td>FMEA20 Mekanik (9 hp)</td>
+          <td><span class="badge b-purple">Teknik</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">1,5 hp smalare, innehåll troligen OK</td>
+        </tr>
+        <tr>
+          <td>Ekonomistyrning, budgetering &amp; kalkylering</td><td>7,5</td>
+          <td>MIOA01 Ind. ekonomi AK ← <strong>KRAV</strong></td>
+          <td><span class="badge b-warn">Ekonomi</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">God match — kräver kursplansjämförelse</td>
+        </tr>
+        <tr><td colspan="6" class="ter-header">Termin 3</td></tr>
+        <tr>
+          <td>Hållfasthetslära</td><td>7,5</td>
+          <td>Hållfasthetslära LTH</td>
+          <td><span class="badge b-purple">Teknik</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">Direkt ämnesmatch</td>
+        </tr>
+        <tr>
+          <td>Hållbar utveckling</td><td>3</td>
+          <td>FMIF01 Miljösystemanalys (6 hp)</td>
+          <td><span class="badge b-ok">Hållbar.</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">ÖrU 3 hp, LTH kräver 6 hp — lucka på 3 hp</td>
+        </tr>
+        <tr>
+          <td>Ellära + Våg- och materiefysik</td><td>9</td>
+          <td>FAFA76 Energi- och omvärldsfysik (7,5 hp)</td>
+          <td><span class="badge b-purple">Teknik</span></td>
+          <td><span class="badge b-warn">Delvis</span></td>
+          <td style="font-size:12px;color:#666">Delvis överlappande innehåll</td>
+        </tr>
+        <tr><td colspan="6" class="ter-header">Termin 4 (pågår nu)</td></tr>
+        <tr>
+          <td>Materiallära</td><td>7,5</td>
+          <td>MMTF20 Materialteknik (7,5 hp)</td>
+          <td><span class="badge b-purple">Teknik</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">Tydlig ämnesmatch</td>
+        </tr>
+        <tr>
+          <td>Ekonomisk planering, investeringar &amp; finansiering</td><td>7,5</td>
+          <td>MIOF25 Ind. ekonomi fortsättningskurs (6 hp)</td>
+          <td><span class="badge b-warn">Ekonomi</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">God match — investeringsstyrning, budgetsystem</td>
+        </tr>
+        <tr>
+          <td>Maskinelement</td><td>7,5</td>
+          <td>Maskinelement LTH</td>
+          <td><span class="badge b-purple">Teknik</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">Direkt ämnesmatch</td>
+        </tr>
+        <tr>
+          <td>Matematisk statistik &amp; sannolikhetslära</td><td>7,5</td>
+          <td>FMSF80 Matematisk statistik AK (9 hp)</td>
+          <td><span class="badge b-blue">Matte</span></td>
+          <td><span class="badge b-ok">OK</span></td>
+          <td style="font-size:12px;color:#666">Stark match, ÖrU 1,5 hp smalare men OK</td>
+        </tr>
+        <tr class="sum-row">
+          <td>Totalt T1–T4</td><td>~93 hp</td>
+          <td colspan="2">Matematik ~30 hp &nbsp;|&nbsp; Ekonomi ~22 hp</td>
+          <td colspan="2"><span class="badge b-ok">Kvantitet OK</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label">LTH-krav — samlad status</div>
+  <div class="card">
+    <div class="border-ok"><strong>✓ 90 hp totalt:</strong> ~93 hp från T1–T4. Kvantiteten uppfylls troligen.</div>
+    <div class="border-ok"><strong>✓ ≥20 hp matematik:</strong> ~30 hp. Klart godkänt.</div>
+    <div class="border-ok"><strong>✓/⚠ ≥20 hp ekonomi:</strong> ~19–22 hp. Marginellt — troligen OK.</div>
+    <div class="border-warn"><strong>⚠ MIOA12-motsvarighet (ind. ek. AK):</strong> ÖrU:s Ekonomistyrning är starkast kandidat men osäkert. LTH måste godkänna den. <em>Kritisk osäkerhetspunkt.</em></div>
+    <div class="border-warn"><strong>⚠ EDAA55/EDAA85-motsvarighet (prog.teknik):</strong> EDAA55 är nedlagd — ersatt av EDAA85 (Python). ÖrU:s kurs kanske inte matchar. <em>Kräver kursplansjämförelse omgående.</em></div>
+  </div>
+</div>
+
+<!-- PANEL 4: BYTESSTRATEGI -->
+<div class="panel" id="panel-switch">
+  <div class="alert">Byte är möjligt men inte garanterat — beror på lediga platser och kursöverensstämmelse. Planera minst ett år i förväg.</div>
+
+  <div class="section-label">Hur "senare del av program" fungerar på LTH</div>
+  <div class="card">
+    <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:10px">LTH annonserar lediga platser i <strong>mars</strong> varje år. Sista anmälningsdag normalt <strong>15 april</strong>. Ansökan via Antagning.se. Max 2 alternativ på LTH.</p>
+    <p style="font-size:13px;font-weight:600;margin-bottom:6px">Specifika krav för I-ekonomi på LTH:</p>
+    <ul style="font-size:13px;color:#555;line-height:1.8;padding-left:18px">
+      <li>90 hp från obligatoriet år 1–2, varav ≥20 hp matematik + ≥20 hp ekonomi</li>
+      <li>Godkänd kurs motsv. MIOA12 Industriell ekonomi, allmän kurs</li>
+      <li>Godkänd kurs motsv. EDAA55/EDAA85 Programmeringsteknik</li>
+      <li>Kursplaner för alla kurser måste bifogas (ÖrU finns inte i LTH:s system)</li>
+    </ul>
+  </div>
+
+  <div class="section-label">Programmeringskursen — viktig uppdatering</div>
+  <div class="card">
+    <div class="border-fail"><strong>EDAA55 är nedlagd</strong> — gavs sista gången våren 2023, sista tentan januari 2025. Ersatt av EDAA85 (Python-baserad). LTH:s krav "EDAA55" uppfylls nu av EDAA85.</div>
+    <div class="border-warn"><strong>Kan man läsa EDAA85 på sommaren?</strong> Möjligt — LTH erbjuder liknande kurser som sommarkurs, men bekräftat sommarutbud för EDAA85 2026 är oklart. Kolla antagning.se (LU:s sommarkurser publiceras feb, sista anmälan 15 mars).</div>
+    <div class="border-ok"><strong>Säkrare alternativ:</strong> Läs EDAA85 som fristående kurs HT25 parallellt med ÖrU:s T5. Ingen förkunskap krävs utöver grundläggande behörighet. 7,5 hp, ges i Lund men troligen möjlig att följa på distans.</div>
+  </div>
+
+  <div class="section-label">Steg-för-steg bytesplan mot LTH HT26</div>
+  <div class="card">
+    <div class="step"><div class="step-num">Nu</div><div class="step-body"><div class="step-title">Hämta kursplaner från ÖrU</div>Ladda ned kursplanerna för Grundläggande programmering och Ekonomistyrning via oru.se/utbildning/kurs-och-utbildningsplaner.</div></div>
+    <div class="step"><div class="step-num">T4</div><div class="step-body"><div class="step-title">Mejla LTH:s studievägledare</div>Skicka kursplanerna till <a href="mailto:studievagledning-i@lth.lu.se">studievagledning-i@lth.lu.se</a> för förhandsbedömning. Fråga specifikt: "Uppfyller dessa kurser kraven för MIOA12 och EDAA85?"</div></div>
+    <div class="step"><div class="step-num">T5</div><div class="step-body"><div class="step-title">Komplettera om nödvändigt</div>Om programmeringskursen underkänns: läs EDAA85 som fristående (sommar eller HT25). Om ind. ek. AK underkänns: läs MIOA01 som fristående via LTH (7,5 hp).</div></div>
+    <div class="step"><div class="step-num">Mars 2026</div><div class="step-body"><div class="step-title">Ansök till LTH + Chalmers</div>Anmäl "senare del av program" på Antagning.se. Ladda upp alla kursplaner. Ha backup-plan klar (stanna ÖrU eller master-spåret).</div></div>
+    <div class="step"><div class="step-num">HT26</div><div class="step-body"><div class="step-title">Start på LTH år 3</div>Väljer teknikprofil: Teknisk design / Energi &amp; miljö / Dataanalys / System &amp; programvara. Termin 9 lämpar sig för utbytesstudier utomlands.</div></div>
+  </div>
+
+  <div class="section-label">Alternativ: Master på LTH/Chalmers efter klar på ÖrU</div>
+  <div class="card">
+    <p style="font-size:13px;color:#555;line-height:1.6">Ta teknologie kandidatexamen på ÖrU (180 hp, möjligt efter T6) → söker masterprogram. LTH:s master <em>Industrial Engineering and Management (TIEMM)</em> tar studenter med relevant kandidatexamen. Ger slutligen samma civilingenjörsexamen. <strong>Ofta enklare att komma in på än byte via "senare del" — ett ofta underskattat alternativ.</strong></p>
+  </div>
+</div>
+
+<!-- PANEL 5: AI & ARBETSMARKNAD -->
+<div class="panel" id="panel-ai">
+  <div class="section-label">Faktiskt läge på arbetsmarknaden 2025</div>
+  <div class="card">
+    <div class="border-warn"><strong>Försämring pågår:</strong> Arbetslösheten bland ingenjörer steg från 1,3% till 1,8% under 2025 — den högsta sedan januari 2013. Lågkonjunktur, Volvo Cars-neddragningar och Northvolt-konkursen påverkade.</div>
+    <div class="border-warn"><strong>Nyexaminerade är extra utsatta:</strong> Forskning visar att akademiker som upplever arbetslöshet vid examen i genomsnitt har 30% lägre inkomst fem år senare.</div>
+    <div class="border-ok"><strong>Ingenjörer håller sig ändå bättre:</strong> Akademiker generellt låg på 5% arbetslöshet (juli 2025) — ingenjörer långt under det. Heta områden: försvarsindustri, energiomställning, klimat, IT-säkerhet.</div>
+  </div>
+
+  <div class="section-label">Vilka inriktningar drabbas hårdast av AI?</div>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Inriktning / arbetsuppgift</th><th>AI-risk</th><th>Relevans för I-ekonomi</th></tr></thead>
+      <tbody>
+        <tr><td>Kalkylering, budgetering, enklare analys</td><td><span class="badge b-fail">Hög risk</span></td><td>Kärninnehåll i ÖrU-programmet</td></tr>
+        <tr><td>Administrativa roller, ekonomifunktioner</td><td><span class="badge b-fail">Hög risk</span></td><td>Vanliga första-jobb för i-ekonomer</td></tr>
+        <tr><td>Standardiserad projektledning</td><td><span class="badge b-warn">Medel risk</span></td><td>Ofta marknadsförd som karriärväg</td></tr>
+        <tr><td>Fysisk produktionsledning, supply chain</td><td><span class="badge b-ok">Låg risk</span></td><td>Kräver fysisk närvaro och kontextbeslut</td></tr>
+        <tr><td>Energiomställning, CleanTech, hållbarhet</td><td><span class="badge b-ok">Låg risk</span></td><td>Växande sektor, stark efterfrågan</td></tr>
+        <tr><td>Strategisk ledning med teknisk kompetens</td><td><span class="badge b-ok">Låg risk</span></td><td>Kräver bred erfarenhet + omdöme</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-label">Vad AI-utvecklingen konkret betyder för det här valet</div>
+  <div class="card">
+    <div class="border-fail"><strong>Risk med ÖrU-spåret:</strong> En student som tar examen 2028–29 med generell ekonomi-teknik-bakgrund möter en tuffare marknad. Ekonomidelen av programmet (kalkylering, enklare analys) är exakt det AI ersätter snabbast.</div>
+    <div class="border-ok"><strong>Fördelen med LTH/Chalmers + teknikprofil:</strong> Djup fysisk systemkompetens (energi, produktion, supply chain) är robust mot AI. Studenter med specialisering mot t.ex. Hållbara energisystem eller Produktion är tydligt mer efterfrågade.</div>
+    <div class="border-ok"><strong>Det AI inte tar:</strong> Förmågan att stå i rummet och fatta beslut med ofullständig information, operativt ledarskap, ingenjörsomdöme i fysiska system — precis det en bra ingenjörsutbildning tränar.</div>
+    <div class="border-warn"><strong>Viktig signal:</strong> 61% av specialister i industrin använder redan AI dagligen, men bara 12% av arbetsplatserna har en tydlig AI-strategi. De som kan använda AI som verktyg — inte ersättas av det — har ett strukturellt försprång.</div>
+  </div>
+
+  <div class="section-label">Rekommendation utifrån AI-perspektivet</div>
+  <div class="card">
+    <p style="font-size:13px;color:#555;line-height:1.6">AI-dimensionen <strong>stärker</strong> argumentet för byte till LTH eller Chalmers, och stärker argumentet för att välja en teknikprofil med fysisk substans. Det försvagar inte valet av industriell ekonomi som program — men det innebär att man behöver mer än ett snitt-program från en medelstor stad. Nätverket, specialiseringen och skolans anseende spelar allt större roll när grundläggande analytiska uppgifter automatiseras bort.</p>
+  </div>
+</div>
+
+<!-- PANEL 6: HANDLINGSPLAN -->
+<div class="panel" id="panel-action">
+  <div class="section-label">Prioriterad handlingsplan — nu till HT26</div>
+  <div class="card">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Ladda ned kursplanerna (denna vecka)</div>Hämta ÖrU:s kursplaner för: <em>Grundläggande programmering</em> och <em>Ekonomistyrning, budgetering och kalkylering</em> via oru.se/utbildning/kurs-och-utbildningsplaner. PDF-format.</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Kontakta LTH:s studievägledare (denna vecka)</div>Mejla <a href="mailto:studievagledning-i@lth.lu.se">studievagledning-i@lth.lu.se</a> med kursplanerna. Fråga: "Uppfyller dessa kurser kraven för MIOA12 och EDAA85 vid ansökan till senare del av program?" Boka fysiskt möte om möjligt — studenten bor i Skåne.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Kolla EDAA85 som sommarkurs (senast 15 mars)</div>Kontrollera om EDAA85 ges som sommarkurs 2026 via antagning.se eller mejla expedition@cs.lth.se. Om ja: anmäl dig. Om nej: planera för fristående kurs HT25.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Fullfölj T5 med strategisk kursvalstrategi</div>ÖrU T5 ger Industriell marknadsföring och Organisation &amp; ledarskap — stärker MIOA12-matchen. Bra oavsett om byte sker eller inte.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Ansök mars 2026</div>LTH + Chalmers som backup via Antagning.se. Sista anmälningsdag normalt 15 april. Max 2 alternativ på LTH. Ladda upp alla kursplaner.</div></div>
+    <div class="step"><div class="step-num">B</div><div class="step-body"><div class="step-title">Backup-plan: Master-spåret</div>Om byte till år 3 misslyckas: ta kandidatexamen på ÖrU (möjligt efter T6 = 180 hp) → ansök till master TIEMM på LTH eller Chalmers. Ger samma civilingenjörsexamen. Ofta enklare att komma in på.</div></div>
+  </div>
+
+  <div class="section-label">Kontakter att spara</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Kontakt</th><th>Syfte</th><th>Adress</th></tr></thead>
+      <tbody>
+        <tr><td>LTH studievägledning I</td><td>Förhandsbedömning kursplaner + bytesfrågor</td><td><a href="mailto:studievagledning-i@lth.lu.se">studievagledning-i@lth.lu.se</a></td></tr>
+        <tr><td>LTH datavetenskap</td><td>Frågor om EDAA85 sommarkurs/fristående</td><td><a href="mailto:expedition@cs.lth.se">expedition@cs.lth.se</a></td></tr>
+        <tr><td>ÖrU studievägledning NT</td><td>Bekräfta kurspoäng + kursplaner</td><td><a href="mailto:studievagledning.nt@oru.se">studievagledning.nt@oru.se</a></td></tr>
+        <tr><td>Antagning.se</td><td>Ansökan senare del + sommarkurser</td><td><a href="https://antagning.se" target="_blank">antagning.se</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
